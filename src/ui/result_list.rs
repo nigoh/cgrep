@@ -118,6 +118,16 @@ mod tests {
     }
 
     #[test]
+    fn test_truncate_japanese() {
+        // All 5 chars fit within max_chars=5
+        assert_eq!(truncate("あいうえお", 5), "あいうえお");
+        // 6 chars, max=5 → first 5 + ".."
+        assert_eq!(truncate("あいうえおか", 5), "あいうえお..");
+        // Mixed ASCII + Japanese: 9 chars, max=6 → first 6 + ".."
+        assert_eq!(truncate("K8s手順確認テスト", 6), "K8s手順確..");
+    }
+
+    #[test]
     fn test_format_result_line_page() {
         let r = SearchResult::Page(PageResult {
             id: "1".into(),

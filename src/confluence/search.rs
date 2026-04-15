@@ -228,4 +228,24 @@ mod tests {
             "unexpected cql: {cql}"
         );
     }
+
+    // ── Japanese keywords ─────────────────────────────────────────────────────
+
+    #[test]
+    fn test_build_cql_japanese() {
+        let tags = vec!["障害対応".to_string()];
+        let cql = build_cql(&tags, &SearchLogic::And, &HashSet::new());
+        assert!(cql.contains(r#"text ~ "障害対応""#), "unexpected cql: {cql}");
+        assert!(cql.ends_with("ORDER BY lastmodified DESC"), "missing ORDER BY: {cql}");
+    }
+
+    #[test]
+    fn test_build_cql_japanese_multiple() {
+        let tags = vec!["インシデント".to_string(), "手順".to_string()];
+        let cql = build_cql(&tags, &SearchLogic::And, &HashSet::new());
+        assert!(
+            cql.contains(r#"text ~ "インシデント" AND text ~ "手順""#),
+            "unexpected cql: {cql}"
+        );
+    }
 }

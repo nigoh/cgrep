@@ -205,4 +205,21 @@ mod tests {
         let name = ref_.strip_prefix("refs/tags/").unwrap_or(ref_);
         assert_eq!(name, "v1.4.2");
     }
+
+    // ── Japanese keywords ─────────────────────────────────────────────────────
+
+    #[test]
+    fn test_build_query_japanese() {
+        let tags = vec!["リリース".to_string()];
+        let result = build_query(&tags, &SearchLogic::And);
+        assert_eq!(result, r#"message:"リリース""#);
+    }
+
+    #[test]
+    fn test_tag_name_contains_japanese() {
+        // Simulates the `name.contains(kw.as_str())` check in search_tags()
+        let tag_name = "v2.0.0-リリース";
+        assert!(tag_name.contains("リリース"));
+        assert!(!tag_name.contains("deploy"));
+    }
 }
