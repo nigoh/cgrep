@@ -235,8 +235,14 @@ mod tests {
     fn test_build_cql_japanese() {
         let tags = vec!["障害対応".to_string()];
         let cql = build_cql(&tags, &SearchLogic::And, &HashSet::new());
-        assert!(cql.contains(r#"text ~ "障害対応""#), "unexpected cql: {cql}");
-        assert!(cql.ends_with("ORDER BY lastmodified DESC"), "missing ORDER BY: {cql}");
+        assert!(
+            cql.contains(r#"text ~ "障害対応""#),
+            "unexpected cql: {cql}"
+        );
+        assert!(
+            cql.ends_with("ORDER BY lastmodified DESC"),
+            "missing ORDER BY: {cql}"
+        );
     }
 
     #[test]

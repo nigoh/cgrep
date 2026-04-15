@@ -238,6 +238,9 @@ mod tests {
             &empty_statuses(),
         );
         assert!(jql.contains(r#"text ~ "障害""#), "unexpected jql: {jql}");
-        assert!(jql.ends_with("ORDER BY updated DESC"), "missing ORDER BY: {jql}");
+        assert!(
+            jql.ends_with("ORDER BY updated DESC"),
+            "missing ORDER BY: {jql}"
+        );
     }
 }
