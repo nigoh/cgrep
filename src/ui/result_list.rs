@@ -44,7 +44,10 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
                 .fg(Color::Yellow)
                 .add_modifier(Modifier::BOLD)
         };
-        items.push(ListItem::new(Line::from(Span::styled(header_text, header_style))));
+        items.push(ListItem::new(Line::from(Span::styled(
+            header_text,
+            header_style,
+        ))));
         flat_idx += 1;
 
         if !group.collapsed {

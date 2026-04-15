@@ -87,8 +87,12 @@ mod tests {
             id: "123".into(),
             title: "My Page".into(),
             space: ConfluenceSpace { key: "DS".into() },
-            links: ConfluenceLinks { webui: webui.into() },
-            version: ConfluenceVersion { when: "2026-01-01T00:00:00Z".into() },
+            links: ConfluenceLinks {
+                webui: webui.into(),
+            },
+            version: ConfluenceVersion {
+                when: "2026-01-01T00:00:00Z".into(),
+            },
             body: None,
         }
     }
@@ -97,7 +101,10 @@ mod tests {
     fn test_page_result_from_item_no_trailing_slash() {
         let item = make_item("/wiki/spaces/DS/pages/123");
         let result = PageResult::from((&item, "https://confluence.example.com"));
-        assert_eq!(result.url, "https://confluence.example.com/wiki/spaces/DS/pages/123");
+        assert_eq!(
+            result.url,
+            "https://confluence.example.com/wiki/spaces/DS/pages/123"
+        );
         assert_eq!(result.id, "123");
         assert_eq!(result.space_key, "DS");
         assert!(result.body.is_none());
@@ -108,7 +115,10 @@ mod tests {
         let item = make_item("/wiki/spaces/DS/pages/123");
         let result = PageResult::from((&item, "https://confluence.example.com/"));
         // trailing slash on base_url must not produce a double slash
-        assert_eq!(result.url, "https://confluence.example.com/wiki/spaces/DS/pages/123");
+        assert_eq!(
+            result.url,
+            "https://confluence.example.com/wiki/spaces/DS/pages/123"
+        );
     }
 
     #[test]
@@ -116,7 +126,9 @@ mod tests {
         let mut item = make_item("/wiki/spaces/DS/pages/456");
         item.id = "456".into();
         item.body = Some(ConfluenceBody {
-            storage: ConfluenceStorage { value: "<p>Hello</p>".into() },
+            storage: ConfluenceStorage {
+                value: "<p>Hello</p>".into(),
+            },
         });
         let result = PageResult::from((&item, "https://confluence.example.com"));
         assert_eq!(result.body.as_deref(), Some("<p>Hello</p>"));

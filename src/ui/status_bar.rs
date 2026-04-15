@@ -15,7 +15,9 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
     let hint_line = if app.status_msg.is_visible() {
         Line::from(Span::styled(
             app.status_msg.text.clone(),
-            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+            Style::default()
+                .fg(Color::Green)
+                .add_modifier(Modifier::BOLD),
         ))
     } else {
         build_key_hint_line(app)
@@ -53,22 +55,24 @@ fn build_progress_line(app: &App) -> Line<'static> {
                 format!("{label}: {n}件 ✅"),
                 Style::default().fg(Color::Green),
             ),
-            GroupStatus::Error(e) => (
-                format!("{label}: ❌ {e}"),
-                Style::default().fg(Color::Red),
-            ),
+            GroupStatus::Error(e) => (format!("{label}: ❌ {e}"), Style::default().fg(Color::Red)),
         };
         spans.push(Span::styled(status_text, status_style));
     }
 
     // Total count
     let total: usize = tab.groups.iter().map(|g| g.results.len()).sum();
-    let all_done = tab.groups.iter().all(|g| !matches!(g.status, GroupStatus::Loading));
+    let all_done = tab
+        .groups
+        .iter()
+        .all(|g| !matches!(g.status, GroupStatus::Loading));
     if all_done && total > 0 {
         spans.push(Span::raw("  |  "));
         spans.push(Span::styled(
             format!("計{total}件"),
-            Style::default().fg(Color::White).add_modifier(Modifier::BOLD),
+            Style::default()
+                .fg(Color::White)
+                .add_modifier(Modifier::BOLD),
         ));
     }
 
@@ -99,7 +103,10 @@ mod tests {
         let app = App::new();
         // All groups start as Loading
         let tab = app.active_tab();
-        assert!(tab.groups.iter().all(|g| matches!(g.status, GroupStatus::Loading)));
+        assert!(tab
+            .groups
+            .iter()
+            .all(|g| matches!(g.status, GroupStatus::Loading)));
     }
 
     #[test]
@@ -108,7 +115,12 @@ mod tests {
         app.active_tab_mut().groups[0].status = GroupStatus::Done(5);
         app.active_tab_mut().groups[1].status = GroupStatus::Done(3);
         app.active_tab_mut().groups[2].status = GroupStatus::Done(2);
-        let total: usize = app.active_tab().groups.iter().map(|g| g.results.len()).sum();
+        let total: usize = app
+            .active_tab()
+            .groups
+            .iter()
+            .map(|g| g.results.len())
+            .sum();
         assert_eq!(total, 0); // No actual results pushed, just status counts
     }
 }

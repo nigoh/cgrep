@@ -73,7 +73,20 @@ fn days_to_ymd(mut days: u64) -> (u64, u64, u64) {
         y += 1;
     }
     let leap = is_leap(y);
-    let months = [31u64, if leap { 29 } else { 28 }, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let months = [
+        31u64,
+        if leap { 29 } else { 28 },
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ];
     let mut mo = 1u64;
     for dm in months {
         if days < dm {
@@ -86,7 +99,7 @@ fn days_to_ymd(mut days: u64) -> (u64, u64, u64) {
 }
 
 fn is_leap(y: u64) -> bool {
-    (y % 4 == 0 && y % 100 != 0) || y % 400 == 0
+    (y.is_multiple_of(4) && !y.is_multiple_of(100)) || y.is_multiple_of(400)
 }
 
 pub fn new_entry(tags: Vec<String>, logic: SearchLogic) -> HistoryItem {
@@ -101,7 +114,6 @@ pub fn new_entry(tags: Vec<String>, logic: SearchLogic) -> HistoryItem {
 mod tests {
     use super::*;
     use crate::app::SearchLogic;
-    use std::fs;
     use tempfile::TempDir;
 
     fn make_item(tags: &[&str], logic: SearchLogic) -> HistoryItem {
@@ -135,9 +147,7 @@ mod tests {
 
     #[test]
     fn test_push_deduplication() {
-        let mut items: Vec<HistoryItem> = vec![
-            make_item(&["k8s"], SearchLogic::And),
-        ];
+        let mut items: Vec<HistoryItem> = vec![make_item(&["k8s"], SearchLogic::And)];
         let new = make_item(&["k8s"], SearchLogic::And);
         push(&mut items, new);
         // Dedup: still 1 item, moved to front
@@ -158,9 +168,7 @@ mod tests {
 
     #[test]
     fn test_push_newest_first() {
-        let mut items: Vec<HistoryItem> = vec![
-            make_item(&["old"], SearchLogic::And),
-        ];
+        let mut items: Vec<HistoryItem> = vec![make_item(&["old"], SearchLogic::And)];
         push(&mut items, make_item(&["new"], SearchLogic::Or));
         assert_eq!(items[0].tags, vec!["new"]);
         assert_eq!(items[1].tags, vec!["old"]);

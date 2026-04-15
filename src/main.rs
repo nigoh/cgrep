@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 mod app;
 mod config;
 mod confluence;
@@ -15,7 +16,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use event::{handle_key, apply_search_event, record_history, HandleResult, SearchEvent};
+use event::{apply_search_event, handle_key, record_history, HandleResult, SearchEvent};
 use futures::StreamExt;
 use ratatui::{backend::CrosstermBackend, Terminal};
 use std::{io, sync::Arc, time::Duration};
@@ -268,10 +269,8 @@ async fn trigger_search(
                 cfg.gerrit_user.clone(),
                 cfg.gerrit_password.clone(),
             );
-            let result = gerrit::search::search(
-                &client, &tags2, &logic2, &repos, commits, tag_search,
-            )
-            .await;
+            let result =
+                gerrit::search::search(&client, &tags2, &logic2, &repos, commits, tag_search).await;
             let _ = tx2.send(SearchEvent::GerritResult(result)).await;
         });
     } else {

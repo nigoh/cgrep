@@ -20,7 +20,12 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
             "Jira" => "[JIRA]",
             _ => "[GIT] ",
         };
-        let text = format!("  {} {}  {}", icon, bm.title, bm.added_at.get(..10).unwrap_or(""));
+        let text = format!(
+            "  {} {}  {}",
+            icon,
+            bm.title,
+            bm.added_at.get(..10).unwrap_or("")
+        );
         let style = if is_sel {
             Style::default().fg(Color::Black).bg(Color::Cyan)
         } else {
@@ -59,15 +64,12 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
         width: popup.width,
         height: 1,
     };
-    f.render_widget(
-        ratatui::widgets::Paragraph::new(hint),
-        hint_area,
-    );
+    f.render_widget(ratatui::widgets::Paragraph::new(hint), hint_area);
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::app::{App, BookmarkItem};
+    use crate::app::App;
 
     #[test]
     fn test_bookmark_panel_empty() {

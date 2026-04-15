@@ -5,30 +5,20 @@ use std::collections::HashSet;
 // Enums
 // ────────────────────────────────────────────
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub enum AppMode {
     /// Search fires automatically 300ms after tag/filter change.
+    #[default]
     Incremental,
     /// Search fires only on Enter with empty input.
     Normal,
 }
 
-impl Default for AppMode {
-    fn default() -> Self {
-        AppMode::Incremental
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub enum SearchLogic {
+    #[default]
     And,
     Or,
-}
-
-impl Default for SearchLogic {
-    fn default() -> Self {
-        SearchLogic::And
-    }
 }
 
 impl SearchLogic {
@@ -47,20 +37,15 @@ impl SearchLogic {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub enum FocusPane {
+    #[default]
     SearchBar,
     ResultList,
     Preview,
     FilterPanel,
     BookmarkPanel,
     HistoryPanel,
-}
-
-impl Default for FocusPane {
-    fn default() -> Self {
-        FocusPane::SearchBar
-    }
 }
 
 #[derive(Debug, Clone, PartialEq)]

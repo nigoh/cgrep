@@ -2,9 +2,9 @@ use std::collections::HashSet;
 
 use anyhow::Context;
 
-use crate::app::{IssueResult, SearchLogic};
 use super::client::JiraClient;
 use super::models::{JiraIssue, JiraSearchResponse};
+use crate::app::{IssueResult, SearchLogic};
 
 /// Build a JQL query string from the given tags, logic, project filter, and status filter.
 pub fn build_jql(

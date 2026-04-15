@@ -67,17 +67,9 @@ pub fn tag_name_from_ref(ref_: &str) -> &str {
 /// not a numeric change number.  The `/q/` search URL accepts Change-Id strings
 /// and always resolves to the correct change page.
 pub fn gerrit_change_to_commit_result(change: GerritChange, base_url: &str) -> CommitResult {
-    let owner = change
-        .owner
-        .name
-        .or(change.owner.email)
-        .unwrap_or_default();
+    let owner = change.owner.name.or(change.owner.email).unwrap_or_default();
 
-    let url = format!(
-        "{}/q/{}",
-        base_url.trim_end_matches('/'),
-        change.id
-    );
+    let url = format!("{}/q/{}", base_url.trim_end_matches('/'), change.id);
 
     CommitResult {
         change_id: change.id,
@@ -144,7 +136,10 @@ mod tests {
             created: "2026-01-01 00:00:00.000000000".into(),
         };
         let result = gerrit_change_to_commit_result(change, "https://gerrit.example.com");
-        assert_eq!(result.url, "https://gerrit.example.com/q/infra~main~I1234abcd");
+        assert_eq!(
+            result.url,
+            "https://gerrit.example.com/q/infra~main~I1234abcd"
+        );
         assert_eq!(result.owner, "Alice");
         assert_eq!(result.repo, "infra");
     }

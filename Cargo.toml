@@ -4,10 +4,19 @@ version = "0.1.0"
 edition = "2021"
 description = "Confluence + Jira + Gerrit 横断 grep TUI ツール"
 license = "MIT"
+repository = "https://github.com/nigoh/cgrep"
+homepage = "https://github.com/nigoh/cgrep"
+keywords = ["tui", "confluence", "jira", "gerrit", "search"]
+categories = ["command-line-utilities", "development-tools"]
 
 [[bin]]
 name = "cgrep"
 path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
 
 [dependencies]
 ratatui        = "0.29"

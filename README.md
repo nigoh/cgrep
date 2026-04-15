@@ -2,7 +2,7 @@
 
 > Confluence + Jira + Gerrit を同時検索する横断 grep TUI ツール
 
-![hero demo](docs/gifs/demo.gif)
+![demo screenshot](docs/screenshots/demo.svg)
 
 ---
 
@@ -21,7 +21,7 @@
 
 ### メイン画面
 
-![main screen](docs/gifs/demo.gif)
+![main screen](docs/screenshots/demo.svg)
 
 ### タグ形式検索バー（AND/OR 切替）
 
@@ -111,6 +111,27 @@ Confluence: 12件 ✅  |  Jira: 8件 ✅  |  Gerrit: 6件 ✅  |  計26件
 
 ## インストール
 
+### ビルド済みバイナリ（推奨）
+
+[GitHub Releases](https://github.com/nigoh/cgrep/releases) から最新バイナリをダウンロード：
+
+| プラットフォーム | ファイル名 |
+|---|---|
+| Linux x86_64 (musl) | `cgrep-linux-x86_64` |
+| Linux aarch64 (musl) | `cgrep-linux-aarch64` |
+| macOS Intel | `cgrep-macos-x86_64` |
+| macOS Apple Silicon | `cgrep-macos-aarch64` |
+| Windows x86_64 | `cgrep-windows-x86_64.exe` |
+
+```bash
+# Linux / macOS の場合（例: Linux x86_64）
+curl -L https://github.com/nigoh/cgrep/releases/latest/download/cgrep-linux-x86_64 -o cgrep
+chmod +x cgrep
+sudo mv cgrep /usr/local/bin/
+```
+
+### ソースからビルド
+
 ```bash
 # Rust がインストールされていない場合
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -123,6 +144,15 @@ cargo build --release
 # パスへ追加
 cp target/release/cgrep ~/.local/bin/
 ```
+
+### リリースの作成（メンテナ向け）
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+タグを push すると GitHub Actions が自動的に全プラットフォーム向けバイナリをビルドして Release を作成します。
 
 ---
 
