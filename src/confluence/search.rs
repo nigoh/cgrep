@@ -2,9 +2,9 @@ use std::collections::HashSet;
 
 use anyhow::{Context, Result};
 
-use crate::app::{PageResult, SearchLogic};
 use super::client::ConfluenceClient;
 use super::models::{ConfluenceItem, ConfluenceSearchResponse};
+use crate::app::{PageResult, SearchLogic};
 
 // ────────────────────────────────────────────────────────────────────────────
 // CQL builder
@@ -132,10 +132,7 @@ pub async fn fetch_body(client: &ConfluenceClient, id: &str) -> Result<String> {
         .await
         .context("Failed to parse Confluence content response")?;
 
-    let html = item
-        .body
-        .map(|b| b.storage.value)
-        .unwrap_or_default();
+    let html = item.body.map(|b| b.storage.value).unwrap_or_default();
 
     Ok(html)
 }
@@ -158,7 +155,10 @@ mod tests {
             cql.contains(r#"text ~ "kubernetes" AND text ~ "deploy""#),
             "unexpected cql: {cql}"
         );
-        assert!(cql.ends_with("ORDER BY lastmodified DESC"), "missing ORDER BY: {cql}");
+        assert!(
+            cql.ends_with("ORDER BY lastmodified DESC"),
+            "missing ORDER BY: {cql}"
+        );
     }
 
     // ── OR mode ──────────────────────────────────────────────────────────────
@@ -171,7 +171,10 @@ mod tests {
             cql.contains(r#"text ~ "kubernetes" OR text ~ "deploy""#),
             "unexpected cql: {cql}"
         );
-        assert!(cql.ends_with("ORDER BY lastmodified DESC"), "missing ORDER BY: {cql}");
+        assert!(
+            cql.ends_with("ORDER BY lastmodified DESC"),
+            "missing ORDER BY: {cql}"
+        );
     }
 
     // ── Space filter ──────────────────────────────────────────────────────────
@@ -183,14 +186,23 @@ mod tests {
         let cql = build_cql(&tags, &SearchLogic::And, &spaces);
 
         // The keyword clause must be present
-        assert!(cql.contains(r#"text ~ "runbook""#), "missing keyword: {cql}");
+        assert!(
+            cql.contains(r#"text ~ "runbook""#),
+            "missing keyword: {cql}"
+        );
 
         // Both space keys must appear inside a space.key in (...) clause
-        assert!(cql.contains("space.key in ("), "missing space filter: {cql}");
+        assert!(
+            cql.contains("space.key in ("),
+            "missing space filter: {cql}"
+        );
         assert!(cql.contains(r#""DS""#), "missing DS: {cql}");
         assert!(cql.contains(r#""OPS""#), "missing OPS: {cql}");
 
-        assert!(cql.ends_with("ORDER BY lastmodified DESC"), "missing ORDER BY: {cql}");
+        assert!(
+            cql.ends_with("ORDER BY lastmodified DESC"),
+            "missing ORDER BY: {cql}"
+        );
     }
 
     // ── Empty tags ────────────────────────────────────────────────────────────
@@ -199,7 +211,10 @@ mod tests {
     fn test_build_cql_empty_tags() {
         // Empty tag list → empty string (caller should skip the search)
         let cql = build_cql(&[], &SearchLogic::And, &HashSet::new());
-        assert!(cql.is_empty(), "expected empty string for no tags, got: {cql:?}");
+        assert!(
+            cql.is_empty(),
+            "expected empty string for no tags, got: {cql:?}"
+        );
     }
 
     // ── Single tag ────────────────────────────────────────────────────────────
@@ -209,8 +224,7 @@ mod tests {
         let tags = vec!["incident".to_string()];
         let cql = build_cql(&tags, &SearchLogic::And, &HashSet::new());
         assert_eq!(
-            cql,
-            r#"text ~ "incident" ORDER BY lastmodified DESC"#,
+            cql, r#"text ~ "incident" ORDER BY lastmodified DESC"#,
             "unexpected cql: {cql}"
         );
     }

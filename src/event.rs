@@ -1,6 +1,4 @@
-use crate::app::{
-    App, AppMode, BookmarkItem, FocusPane, FinishState, SearchResult,
-};
+use crate::app::{App, AppMode, BookmarkItem, FinishState, FocusPane, SearchResult};
 use crate::config::Config;
 use crate::storage;
 use crate::ui::filter_panel::{build_filter_items, toggle_at};
@@ -46,8 +44,7 @@ pub fn handle_key(
 
     // ── Global shortcuts ───────────────────────────────────────────────
     match (key.modifiers, key.code) {
-        (KeyModifiers::NONE, KeyCode::Char('q'))
-        | (KeyModifiers::CONTROL, KeyCode::Char('c')) => {
+        (KeyModifiers::NONE, KeyCode::Char('q')) | (KeyModifiers::CONTROL, KeyCode::Char('c')) => {
             app.should_quit = true;
             return HandleResult::None;
         }
@@ -109,11 +106,7 @@ pub fn handle_key(
 // Search bar
 // ─────────────────────────────────────────────
 
-fn handle_search_bar(
-    app: &mut App,
-    key: KeyEvent,
-    _storage_dir: &std::path::Path,
-) -> HandleResult {
+fn handle_search_bar(app: &mut App, key: KeyEvent, _storage_dir: &std::path::Path) -> HandleResult {
     let tab = app.active_tab_mut();
     match (key.modifiers, key.code) {
         (KeyModifiers::NONE, KeyCode::Enter) => {
@@ -144,9 +137,7 @@ fn handle_search_bar(
         }
         (KeyModifiers::CONTROL, KeyCode::Char('m')) => {
             app.active_tab_mut().search.toggle_logic();
-            if matches!(app.mode, AppMode::Incremental)
-                && app.active_tab().search.has_tags()
-            {
+            if matches!(app.mode, AppMode::Incremental) && app.active_tab().search.has_tags() {
                 return HandleResult::TriggerSearch;
             }
         }
@@ -225,8 +216,11 @@ fn handle_result_list(
                     title,
                     url,
                     source,
-                    added_at: crate::storage::history::new_entry(vec![], crate::app::SearchLogic::And)
-                        .timestamp,
+                    added_at: crate::storage::history::new_entry(
+                        vec![],
+                        crate::app::SearchLogic::And,
+                    )
+                    .timestamp,
                 };
                 let added = crate::storage::bookmarks::toggle(&mut app.bookmarks, bm);
                 if added {
@@ -252,8 +246,7 @@ fn handle_result_list(
 fn handle_preview(app: &mut App, key: KeyEvent) -> HandleResult {
     match (key.modifiers, key.code) {
         (KeyModifiers::NONE, KeyCode::Up) => {
-            app.active_tab_mut().preview_scroll =
-                app.active_tab().preview_scroll.saturating_sub(1);
+            app.active_tab_mut().preview_scroll = app.active_tab().preview_scroll.saturating_sub(1);
         }
         (KeyModifiers::NONE, KeyCode::Down) => {
             app.active_tab_mut().preview_scroll += 1;
@@ -304,9 +297,7 @@ fn handle_filter_panel(app: &mut App, key: KeyEvent) -> HandleResult {
             let idx = app.overlay_index;
             let opts = app.options.clone();
             toggle_at(idx, &mut app.active_tab_mut().filter, &opts);
-            if matches!(app.mode, AppMode::Incremental)
-                && app.active_tab().search.has_tags()
-            {
+            if matches!(app.mode, AppMode::Incremental) && app.active_tab().search.has_tags() {
                 return HandleResult::TriggerSearch;
             }
         }
@@ -430,7 +421,10 @@ pub fn apply_search_event(app: &mut App, event: SearchEvent, _storage_dir: &std:
     match event {
         SearchEvent::ConfluenceResult(Ok(pages)) => {
             let count = pages.len();
-            tab.groups[0].results = pages.into_iter().map(crate::app::SearchResult::Page).collect();
+            tab.groups[0].results = pages
+                .into_iter()
+                .map(crate::app::SearchResult::Page)
+                .collect();
             tab.groups[0].status = crate::app::GroupStatus::Done(count);
         }
         SearchEvent::ConfluenceResult(Err(e)) => {
@@ -438,7 +432,10 @@ pub fn apply_search_event(app: &mut App, event: SearchEvent, _storage_dir: &std:
         }
         SearchEvent::JiraResult(Ok(issues)) => {
             let count = issues.len();
-            tab.groups[1].results = issues.into_iter().map(crate::app::SearchResult::Issue).collect();
+            tab.groups[1].results = issues
+                .into_iter()
+                .map(crate::app::SearchResult::Issue)
+                .collect();
             tab.groups[1].status = crate::app::GroupStatus::Done(count);
         }
         SearchEvent::JiraResult(Err(e)) => {
@@ -495,10 +492,8 @@ pub fn record_history(app: &mut App, storage_dir: &std::path::Path) {
     if tab.search.tags.is_empty() {
         return;
     }
-    let entry = crate::storage::history::new_entry(
-        tab.search.tags.clone(),
-        tab.search.logic.clone(),
-    );
+    let entry =
+        crate::storage::history::new_entry(tab.search.tags.clone(), tab.search.logic.clone());
     crate::storage::history::push(&mut app.history, entry);
     let _ = crate::storage::history::save(storage_dir, &app.history);
 }

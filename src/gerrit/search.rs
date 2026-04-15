@@ -56,15 +56,16 @@ async fn search_commits(
     let base_query = build_query(tags, logic);
     let query = append_project_filter(&base_query, repos);
 
-    let url = format!(
-        "{}/a/changes/",
-        client.base_url().trim_end_matches('/'),
-    );
+    let url = format!("{}/a/changes/", client.base_url().trim_end_matches('/'),);
 
     let response = client
         .client()
         .get(&url)
-        .query(&[("q", query.as_str()), ("o", "DETAILED_ACCOUNTS"), ("n", "50")])
+        .query(&[
+            ("q", query.as_str()),
+            ("o", "DETAILED_ACCOUNTS"),
+            ("n", "50"),
+        ])
         .basic_auth(client.user(), Some(client.password()))
         .send()
         .await?

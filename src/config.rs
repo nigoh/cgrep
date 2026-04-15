@@ -82,9 +82,7 @@ impl Config {
             gerrit_url,
             gerrit_user,
             gerrit_password,
-            gerrit_default_repos: parse_csv(
-                &env::var("GERRIT_DEFAULT_REPOS").unwrap_or_default(),
-            ),
+            gerrit_default_repos: parse_csv(&env::var("GERRIT_DEFAULT_REPOS").unwrap_or_default()),
         })
     }
 }
@@ -93,7 +91,10 @@ fn parse_csv(s: &str) -> Vec<String> {
     if s.is_empty() {
         return Vec::new();
     }
-    s.split(',').map(|t| t.trim().to_string()).filter(|t| !t.is_empty()).collect()
+    s.split(',')
+        .map(|t| t.trim().to_string())
+        .filter(|t| !t.is_empty())
+        .collect()
 }
 
 #[cfg(test)]
@@ -148,11 +149,18 @@ mod tests {
         assert_eq!(cfg.gerrit_default_repos, vec!["infra", "platform"]);
 
         unset_env(&[
-            "CONFLUENCE_URL", "CONFLUENCE_USER", "CONFLUENCE_TOKEN",
+            "CONFLUENCE_URL",
+            "CONFLUENCE_USER",
+            "CONFLUENCE_TOKEN",
             "CONFLUENCE_DEFAULT_SPACES",
-            "JIRA_URL", "JIRA_USER", "JIRA_TOKEN",
-            "JIRA_DEFAULT_PROJECTS", "JIRA_DEFAULT_STATUSES",
-            "GERRIT_URL", "GERRIT_USER", "GERRIT_PASSWORD",
+            "JIRA_URL",
+            "JIRA_USER",
+            "JIRA_TOKEN",
+            "JIRA_DEFAULT_PROJECTS",
+            "JIRA_DEFAULT_STATUSES",
+            "GERRIT_URL",
+            "GERRIT_USER",
+            "GERRIT_PASSWORD",
             "GERRIT_DEFAULT_REPOS",
         ]);
     }
@@ -161,9 +169,15 @@ mod tests {
     fn test_missing_required_vars() {
         // Ensure required vars are not set
         unset_env(&[
-            "CONFLUENCE_URL", "CONFLUENCE_USER", "CONFLUENCE_TOKEN",
-            "JIRA_URL", "JIRA_USER", "JIRA_TOKEN",
-            "GERRIT_URL", "GERRIT_USER", "GERRIT_PASSWORD",
+            "CONFLUENCE_URL",
+            "CONFLUENCE_USER",
+            "CONFLUENCE_TOKEN",
+            "JIRA_URL",
+            "JIRA_USER",
+            "JIRA_TOKEN",
+            "GERRIT_URL",
+            "GERRIT_USER",
+            "GERRIT_PASSWORD",
         ]);
         let result = Config::from_env();
         assert!(result.is_err());
@@ -189,9 +203,15 @@ mod tests {
         assert!(cfg.gerrit_default_repos.is_empty());
 
         unset_env(&[
-            "CONFLUENCE_URL", "CONFLUENCE_USER", "CONFLUENCE_TOKEN",
-            "JIRA_URL", "JIRA_USER", "JIRA_TOKEN",
-            "GERRIT_URL", "GERRIT_USER", "GERRIT_PASSWORD",
+            "CONFLUENCE_URL",
+            "CONFLUENCE_USER",
+            "CONFLUENCE_TOKEN",
+            "JIRA_URL",
+            "JIRA_USER",
+            "JIRA_TOKEN",
+            "GERRIT_URL",
+            "GERRIT_USER",
+            "GERRIT_PASSWORD",
         ]);
     }
 

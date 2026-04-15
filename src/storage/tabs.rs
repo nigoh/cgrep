@@ -50,10 +50,7 @@ mod tests {
     #[test]
     fn test_save_and_load() {
         let dir = TempDir::new().unwrap();
-        let sessions = vec![
-            make_session(1, "k8s調査"),
-            make_session(2, "監視設定"),
-        ];
+        let sessions = vec![make_session(1, "k8s調査"), make_session(2, "監視設定")];
         save(dir.path(), &sessions).unwrap();
         let loaded = load(dir.path()).unwrap();
         assert_eq!(loaded.len(), 2);

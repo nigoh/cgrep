@@ -20,8 +20,12 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
 
     let logic_label = search.logic.label();
     let logic_style = match search.logic {
-        SearchLogic::And => Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD),
-        SearchLogic::Or => Style::default().fg(Color::Magenta).add_modifier(Modifier::BOLD),
+        SearchLogic::And => Style::default()
+            .fg(Color::Yellow)
+            .add_modifier(Modifier::BOLD),
+        SearchLogic::Or => Style::default()
+            .fg(Color::Magenta)
+            .add_modifier(Modifier::BOLD),
     };
 
     let mut spans: Vec<Span> = vec![
