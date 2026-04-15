@@ -1,6 +1,6 @@
 [package]
 name = "cgrep"
-version = "0.1.0"
+version = "0.10.0"
 edition = "2021"
 description = "Confluence + Jira + Gerrit 横断 grep TUI ツール"
 license = "MIT"
