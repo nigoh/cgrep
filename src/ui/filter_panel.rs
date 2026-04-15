@@ -25,7 +25,9 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
         let style = if is_sel {
             Style::default().fg(Color::Black).bg(Color::Cyan)
         } else if fi.is_header {
-            Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+            Style::default()
+                .fg(Color::Yellow)
+                .add_modifier(Modifier::BOLD)
         } else {
             Style::default().fg(Color::White)
         };
@@ -40,11 +42,7 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
     let mut state = ListState::default();
     state.select(Some(app.overlay_index));
 
-    f.render_stateful_widget(
-        List::new(items).block(block),
-        popup,
-        &mut state,
-    );
+    f.render_stateful_widget(List::new(items).block(block), popup, &mut state);
 }
 
 #[derive(Debug)]
@@ -75,33 +73,33 @@ pub enum SourceToggle {
 }
 
 pub fn build_filter_items(filter: &FilterState, opts: &AvailableOptions) -> Vec<FilterItem> {
-    let mut items = Vec::new();
-
     // Source section
-    items.push(FilterItem {
-        label: "ソース".into(),
-        enabled: false,
-        is_header: true,
-        kind: FilterItemKind::Header,
-    });
-    items.push(FilterItem {
-        label: "Confluence".into(),
-        enabled: filter.confluence_enabled,
-        is_header: false,
-        kind: FilterItemKind::Source(SourceToggle::Confluence),
-    });
-    items.push(FilterItem {
-        label: "Jira".into(),
-        enabled: filter.jira_enabled,
-        is_header: false,
-        kind: FilterItemKind::Source(SourceToggle::Jira),
-    });
-    items.push(FilterItem {
-        label: "Gerrit".into(),
-        enabled: filter.gerrit_enabled,
-        is_header: false,
-        kind: FilterItemKind::Source(SourceToggle::Gerrit),
-    });
+    let mut items = vec![
+        FilterItem {
+            label: "ソース".into(),
+            enabled: false,
+            is_header: true,
+            kind: FilterItemKind::Header,
+        },
+        FilterItem {
+            label: "Confluence".into(),
+            enabled: filter.confluence_enabled,
+            is_header: false,
+            kind: FilterItemKind::Source(SourceToggle::Confluence),
+        },
+        FilterItem {
+            label: "Jira".into(),
+            enabled: filter.jira_enabled,
+            is_header: false,
+            kind: FilterItemKind::Source(SourceToggle::Jira),
+        },
+        FilterItem {
+            label: "Gerrit".into(),
+            enabled: filter.gerrit_enabled,
+            is_header: false,
+            kind: FilterItemKind::Source(SourceToggle::Gerrit),
+        },
+    ];
 
     // Confluence spaces
     if !opts.spaces.is_empty() {
