@@ -15,7 +15,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+          - os: macos-latest
+          - os: windows-latest
+            # env::set_var / remove_var are not thread-safe on Windows;
+            # run tests single-threaded to avoid race conditions.
+            test_flags: "-- --test-threads=1"
 
     steps:
       - uses: actions/checkout@v4
@@ -45,4 +51,4 @@ jobs:
         run: cargo build
 
       - name: Test
-        run: cargo test
+        run: cargo test ${{ matrix.test_flags }}
