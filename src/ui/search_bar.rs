@@ -62,7 +62,7 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
 
 #[cfg(test)]
 mod tests {
-    use crate::app::{App, SearchLogic, SearchState};
+    use crate::app::SearchState;
 
     #[test]
     fn test_search_state_display_logic() {

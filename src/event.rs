@@ -517,7 +517,6 @@ mod tests {
     use super::*;
     use crate::app::{App, SearchLogic};
     use crate::config::Config;
-    use std::collections::HashMap;
     use std::path::PathBuf;
 
     fn dummy_config() -> Config {

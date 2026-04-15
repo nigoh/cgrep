@@ -114,7 +114,6 @@ pub fn new_entry(tags: Vec<String>, logic: SearchLogic) -> HistoryItem {
 mod tests {
     use super::*;
     use crate::app::SearchLogic;
-    use std::fs;
     use tempfile::TempDir;
 
     fn make_item(tags: &[&str], logic: SearchLogic) -> HistoryItem {

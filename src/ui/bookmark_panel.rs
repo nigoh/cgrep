@@ -69,7 +69,7 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
 
 #[cfg(test)]
 mod tests {
-    use crate::app::{App, BookmarkItem};
+    use crate::app::App;
 
     #[test]
     fn test_bookmark_panel_empty() {
