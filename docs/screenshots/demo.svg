@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620">
+  <defs>
+    <style>
+      text {
+        font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+        font-size: 13px;
+        white-space: pre;
+      }
+      .bg   { fill: #282a36; }
+      .fg   { fill: #f8f8f2; }
+      .dim  { fill: #6272a4; }
+      .cyan { fill: #8be9fd; }
+      .grn  { fill: #50fa7b; }
+      .yel  { fill: #f1fa8c; }
+      .org  { fill: #ffb86c; }
+      .pnk  { fill: #ff79c6; }
+      .pur  { fill: #bd93f9; }
+      .red  { fill: #ff5555; }
+      .sel  { fill: #44475a; }
+      .wht  { fill: #ffffff; }
+      .bold { font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- Terminal background -->
+  <rect width="1000" height="620" rx="8" ry="8" class="bg"/>
+
+  <!-- Window chrome (title bar) -->
+  <rect width="1000" height="30" rx="8" ry="8" fill="#1e1f29"/>
+  <rect y="16" width="1000" height="14" fill="#1e1f29"/>
+  <circle cx="18" cy="15" r="6" fill="#ff5555"/>
+  <circle cx="38" cy="15" r="6" fill="#f1fa8c"/>
+  <circle cx="58" cy="15" r="6" fill="#50fa7b"/>
+  <text x="500" y="20" text-anchor="middle" fill="#6272a4" font-size="12">cgrep — bash</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- TAB BAR (y=38) -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <rect x="0" y="30" width="1000" height="26" fill="#1e1f29"/>
+  <!-- active tab -->
+  <rect x="8" y="34" width="220" height="22" rx="3" fill="#282a36"/>
+  <text x="18" y="49" class="fg bold">Tab 1: kubernetes deployment</text>
+  <!-- inactive tab -->
+  <rect x="234" y="36" width="150" height="18" rx="3" fill="#1e1f29"/>
+  <text x="244" y="49" class="dim">Tab 2: monitoring</text>
+  <!-- new tab button -->
+  <text x="396" y="49" class="dim"> + </text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SEARCH BAR (y=56) -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- Search bar border top -->
+  <text x="8" y="72" class="dim">┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐</text>
+  <!-- Search bar content -->
+  <text x="8" y="90" class="dim">│ </text>
+  <text x="25" y="90" class="cyan bold">🔍</text>
+  <text x="45" y="90" class="dim"> AND </text>
+  <text x="85" y="90" class="dim">│ </text>
+  <!-- tag 1 -->
+  <rect x="100" y="79" width="88" height="16" rx="3" fill="#44475a"/>
+  <text x="104" y="91" class="pnk">❰</text><text x="114" y="91" class="yel">kubernetes</text><text x="190" y="91" class="pnk">❱</text>
+  <!-- tag 2 -->
+  <rect x="198" y="79" width="90" height="16" rx="3" fill="#44475a"/>
+  <text x="202" y="91" class="pnk">❰</text><text x="212" y="91" class="yel">deployment</text><text x="288" y="91" class="pnk">❱</text>
+  <!-- cursor -->
+  <rect x="298" y="79" width="8" height="16" fill="#f8f8f2" opacity="0.8"/>
+  <text x="800" y="90" class="dim">/ Incremental  Ctrl+M: AND/OR</text>
+  <text x="8" y="106" class="dim">└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- MAIN AREA split: results (left) + preview (right) -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- LEFT: Results list -->
+  <!-- Confluence group header -->
+  <text x="8"  y="126" class="dim">  </text>
+  <text x="22" y="126" class="cyan bold">▼ Confluence</text>
+  <text x="120" y="126" class="dim">  ────────────────────────────────────────</text>
+  <text x="510" y="126" class="grn bold"> 12件 ✅</text>
+
+  <text x="8"  y="144" class="fg">   </text>
+  <text x="22" y="144" class="fg">📄</text>
+  <text x="40" y="144" class="fg"> Kubernetes Deployment Best Practices</text>
+  <text x="400" y="144" class="dim">DS · confluence.example.com</text>
+
+  <!-- selected row highlight -->
+  <rect x="4" y="149" width="640" height="18" rx="2" fill="#44475a"/>
+  <text x="8"  y="162" class="dim"> ▶ </text>
+  <text x="30" y="162" class="fg">📄</text>
+  <text x="48" y="162" class="fg bold"> Container Orchestration Guide</text>
+  <text x="380" y="162" class="dim">OPS · confluence.example.com</text>
+
+  <text x="8"  y="180" class="fg">   </text>
+  <text x="22" y="180" class="fg">📄</text>
+  <text x="40" y="180" class="fg"> K8s Cluster Setup and Scaling</text>
+  <text x="376" y="180" class="dim">INFRA · confluence.example.com</text>
+
+  <text x="8"  y="198" class="fg">   </text>
+  <text x="22" y="198" class="fg">📄</text>
+  <text x="40" y="198" class="fg"> Namespace and RBAC Configuration</text>
+  <text x="388" y="198" class="dim">DS · confluence.example.com</text>
+
+  <!-- Jira group header -->
+  <text x="8"  y="218" class="dim">  </text>
+  <text x="22" y="218" class="org bold">▼ Jira</text>
+  <text x="75" y="218" class="dim">  ──────────────────────────────────────────────────</text>
+  <text x="510" y="218" class="grn bold"> 8件 ✅</text>
+
+  <text x="8"  y="236" class="fg">   </text>
+  <text x="22" y="236" class="org">🐛</text>
+  <text x="40" y="236" class="pur">[OPS-123]</text>
+  <text x="120" y="236" class="fg"> Deploy kubernetes to production</text>
+  <text x="450" y="236" class="yel">In Progress</text>
+
+  <text x="8"  y="254" class="fg">   </text>
+  <text x="22" y="254" class="org">🐛</text>
+  <text x="40" y="254" class="pur">[DS-456]</text>
+  <text x="112" y="254" class="fg"> Update deployment manifests</text>
+  <text x="440" y="254" class="grn">Open</text>
+
+  <text x="8"  y="272" class="fg">   </text>
+  <text x="22" y="272" class="org">🐛</text>
+  <text x="40" y="272" class="pur">[OPS-789]</text>
+  <text x="120" y="272" class="fg"> Kubernetes node autoscaling</text>
+  <text x="436" y="272" class="dim">Closed</text>
+
+  <text x="8"  y="290" class="fg">   </text>
+  <text x="22" y="290" class="org">🐛</text>
+  <text x="40" y="290" class="pur">[DS-101]</text>
+  <text x="112" y="290" class="fg"> Add deployment health checks</text>
+  <text x="440" y="290" class="grn">Open</text>
+
+  <!-- Gerrit group header -->
+  <text x="8"  y="310" class="dim">  </text>
+  <text x="22" y="310" class="cyan bold">▼ Gerrit</text>
+  <text x="82" y="310" class="dim">  ─────────────────────────────────────────────────</text>
+  <text x="510" y="310" class="grn bold"> 6件 ✅</text>
+
+  <text x="8"  y="328" class="fg">   </text>
+  <text x="22" y="328" class="cyan">📝</text>
+  <text x="40" y="328" class="fg"> feat: add kubernetes deployment configs</text>
+  <text x="448" y="328" class="dim">platform</text>
+
+  <text x="8"  y="346" class="fg">   </text>
+  <text x="22" y="346" class="cyan">📝</text>
+  <text x="40" y="346" class="fg"> fix: update resource limits for pods</text>
+  <text x="436" y="346" class="dim">infra</text>
+
+  <text x="8"  y="364" class="fg">   </text>
+  <text x="22" y="364" class="cyan">📝</text>
+  <text x="40" y="364" class="fg"> chore: bump k8s client-go to v0.29</text>
+  <text x="436" y="364" class="dim">platform</text>
+
+  <text x="8"  y="382" class="fg">   </text>
+  <text x="22" y="382" class="cyan">📝</text>
+  <text x="40" y="382" class="fg"> docs: add deployment runbook</text>
+  <text x="400" y="382" class="dim">infra</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- RIGHT: Preview panel -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <line x1="658" y1="110" x2="658" y2="530" stroke="#6272a4" stroke-width="1"/>
+
+  <!-- Preview title -->
+  <text x="665" y="126" class="pur bold">Preview</text>
+  <text x="940" y="126" class="dim">[p]</text>
+
+  <text x="665" y="148" class="fg bold">Container Orchestration Guide</text>
+  <text x="665" y="164" class="dim">Confluence · DS</text>
+  <line x1="665" y1="172" x2="990" y2="172" stroke="#44475a" stroke-width="1"/>
+
+  <text x="665" y="190" class="fg">This guide covers best practices for</text>
+  <text x="665" y="206" class="fg">container orchestration using Kubernetes</text>
+  <text x="665" y="222" class="fg">in enterprise environments.</text>
+
+  <text x="665" y="248" class="yel bold">Overview</text>
+  <text x="665" y="264" class="fg">Kubernetes provides a framework to run</text>
+  <text x="665" y="280" class="fg">distributed systems resiliently. It takes</text>
+  <text x="665" y="296" class="fg">care of scaling and failover for your</text>
+  <text x="665" y="312" class="fg">application, provides deployment patterns,</text>
+  <text x="665" y="328" class="fg">and more.</text>
+
+  <text x="665" y="354" class="yel bold">Key Concepts</text>
+  <text x="665" y="370" class="fg">• </text><text x="677" y="370" class="cyan">Pods</text><text x="704" y="370" class="fg">: smallest deployable units</text>
+  <text x="665" y="386" class="fg">• </text><text x="677" y="386" class="cyan">Services</text><text x="730" y="386" class="fg">: stable networking layer</text>
+  <text x="665" y="402" class="fg">• </text><text x="677" y="402" class="cyan">Deployments</text><text x="751" y="402" class="fg">: manage replica sets</text>
+  <text x="665" y="418" class="fg">• </text><text x="677" y="418" class="cyan">ConfigMaps</text><text x="746" y="418" class="fg">: external configuration</text>
+  <text x="665" y="434" class="fg">• </text><text x="677" y="434" class="cyan">Namespaces</text><text x="751" y="434" class="fg">: logical isolation</text>
+
+  <text x="665" y="460" class="dim">─────────────────────────────────</text>
+  <text x="665" y="476" class="dim">URL: https://confluence.example.com/</text>
+  <text x="665" y="492" class="dim">     display/DS/container-orch</text>
+  <text x="665" y="510" class="dim">  y: copy URL   Enter: open in browser</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- FOOTER (y=530) -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <line x1="0" y1="530" x2="1000" y2="530" stroke="#6272a4" stroke-width="1"/>
+
+  <!-- Travolta animation frame -->
+  <text x="8" y="548" class="pnk bold">✨o✨</text>
+  <text x="55" y="548" class="dim">  </text>
+
+  <!-- Progress status -->
+  <text x="70" y="548" class="grn">Confluence: 12件 ✅</text>
+  <text x="260" y="548" class="dim">  |  </text>
+  <text x="290" y="548" class="grn">Jira: 8件 ✅</text>
+  <text x="400" y="548" class="dim">  |  </text>
+  <text x="430" y="548" class="grn">Gerrit: 6件 ✅</text>
+  <text x="560" y="548" class="dim">  |  </text>
+  <text x="590" y="548" class="wht bold">計26件</text>
+
+  <!-- Key hints -->
+  <text x="8"  y="566" class="cyan">[I]</text>
+  <text x="35" y="566" class="dim">  ↑↓:移動  Enter:開く  y:URLコピー  b:ブックマーク  Space:折畳  Tab:フィルタ  Ctrl+M:AND/OR  ?:ヘルプ</text>
+</svg>
