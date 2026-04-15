@@ -585,8 +585,10 @@ mod tests {
 
     #[test]
     fn test_search_state_add_tag() {
-        let mut s = SearchState::default();
-        s.input = "kubernetes".into();
+        let mut s = SearchState {
+            input: "kubernetes".into(),
+            ..Default::default()
+        };
         s.add_tag(s.input.clone());
         assert_eq!(s.tags, vec!["kubernetes"]);
         assert!(s.input.is_empty());
@@ -604,8 +606,10 @@ mod tests {
 
     #[test]
     fn test_search_state_delete_last_tag() {
-        let mut s = SearchState::default();
-        s.tags = vec!["a".into(), "b".into()];
+        let mut s = SearchState {
+            tags: vec!["a".into(), "b".into()],
+            ..Default::default()
+        };
         s.delete_last_tag();
         assert_eq!(s.tags, vec!["a"]);
         s.delete_last_tag();

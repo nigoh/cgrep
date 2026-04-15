@@ -74,8 +74,10 @@ mod tests {
 
     #[test]
     fn test_search_state_input_cycle() {
-        let mut state = SearchState::default();
-        state.input = "kubernetes".into();
+        let mut state = SearchState {
+            input: "kubernetes".into(),
+            ..Default::default()
+        };
         assert!(!state.has_tags());
         state.add_tag(state.input.clone());
         assert!(state.has_tags());
