@@ -226,4 +226,21 @@ mod tests {
         assert!(jql.contains("status in (\"Open\")"), "got: {}", jql);
         assert!(jql.ends_with("ORDER BY updated DESC"), "got: {}", jql);
     }
+
+    // ── Japanese keywords ─────────────────────────────────────────────────────
+
+    #[test]
+    fn test_build_jql_japanese() {
+        let jql = build_jql(
+            &tags(&["障害"]),
+            &SearchLogic::And,
+            &empty_projects(),
+            &empty_statuses(),
+        );
+        assert!(jql.contains(r#"text ~ "障害""#), "unexpected jql: {jql}");
+        assert!(
+            jql.ends_with("ORDER BY updated DESC"),
+            "missing ORDER BY: {jql}"
+        );
+    }
 }
