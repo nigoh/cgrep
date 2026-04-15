@@ -42,7 +42,7 @@ jobs:
         run: cargo clippy -- -D warnings
 
       - name: Build
-        run: cargo build --release
+        run: cargo build
 
       - name: Test
         run: cargo test

@@ -62,11 +62,15 @@ jobs:
       - name: Build release binary
         run: cargo build --release --target ${{ matrix.target }}
 
-      - name: Rename binary (Unix)
+      - name: Strip binary (Unix)
+        if: matrix.os != 'windows-latest'
+        run: strip target/${{ matrix.target }}/release/cgrep || true
+
+      - name: Copy binary (Unix)
         if: matrix.os != 'windows-latest'
         run: cp target/${{ matrix.target }}/release/cgrep ${{ matrix.asset_name }}
 
-      - name: Rename binary (Windows)
+      - name: Copy binary (Windows)
         if: matrix.os == 'windows-latest'
         run: copy target\${{ matrix.target }}\release\cgrep.exe ${{ matrix.asset_name }}
         shell: cmd
