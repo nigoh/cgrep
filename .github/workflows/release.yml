@@ -18,18 +18,23 @@ jobs:
           - target: x86_64-unknown-linux-musl
             os: ubuntu-latest
             asset_name: cgrep-linux-x86_64
+            archive_ext: tar.gz
           - target: aarch64-unknown-linux-musl
             os: ubuntu-latest
             asset_name: cgrep-linux-aarch64
+            archive_ext: tar.gz
           - target: x86_64-apple-darwin
             os: macos-latest
             asset_name: cgrep-macos-x86_64
+            archive_ext: tar.gz
           - target: aarch64-apple-darwin
             os: macos-latest
             asset_name: cgrep-macos-aarch64
+            archive_ext: tar.gz
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-            asset_name: cgrep-windows-x86_64.exe
+            asset_name: cgrep-windows-x86_64
+            archive_ext: zip
 
     steps:
       - uses: actions/checkout@v4
@@ -66,20 +71,33 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: strip target/${{ matrix.target }}/release/cgrep || true
 
-      - name: Copy binary (Unix)
+      - name: Create archive (Unix)
         if: matrix.os != 'windows-latest'
-        run: cp target/${{ matrix.target }}/release/cgrep ${{ matrix.asset_name }}
+        run: |
+          mkdir -p dist
+          cp target/${{ matrix.target }}/release/cgrep dist/cgrep
+          cp README.md dist/
+          tar -czf ${{ matrix.asset_name }}.tar.gz -C dist .
+          shasum -a 256 ${{ matrix.asset_name }}.tar.gz > ${{ matrix.asset_name }}.tar.gz.sha256
 
-      - name: Copy binary (Windows)
+      - name: Create archive (Windows)
         if: matrix.os == 'windows-latest'
-        run: copy target\${{ matrix.target }}\release\cgrep.exe ${{ matrix.asset_name }}
-        shell: cmd
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist
+          Copy-Item target\${{ matrix.target }}\release\cgrep.exe dist\cgrep.exe
+          Copy-Item README.md dist\
+          Compress-Archive -Path dist\* -DestinationPath ${{ matrix.asset_name }}.zip
+          $hash = (Get-FileHash ${{ matrix.asset_name }}.zip -Algorithm SHA256).Hash.ToLower()
+          "$hash  ${{ matrix.asset_name }}.zip" | Out-File -Encoding ASCII ${{ matrix.asset_name }}.zip.sha256
 
-      - name: Upload artifact
+      - name: Upload archive artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.asset_name }}
-          path: ${{ matrix.asset_name }}
+          path: |
+            ${{ matrix.asset_name }}.${{ matrix.archive_ext }}
+            ${{ matrix.asset_name }}.${{ matrix.archive_ext }}.sha256
 
   release:
     name: Create GitHub Release
@@ -96,10 +114,19 @@ jobs:
         with:
           path: artifacts
 
+      - name: Create combined checksum file
+        run: |
+          find artifacts -name '*.sha256' -exec cat {} \; | sort > checksums-sha256.txt
+          cat checksums-sha256.txt
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: false
           generate_release_notes: true
-          files: artifacts/**/*
+          files: |
+            artifacts/**/*.tar.gz
+            artifacts/**/*.zip
+            artifacts/**/*.sha256
+            checksums-sha256.txt
