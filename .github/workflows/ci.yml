@@ -17,7 +17,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            # env::set_var / remove_var are not thread-safe; run single-threaded.
+            test_flags: "-- --test-threads=1"
           - os: macos-latest
+            test_flags: "-- --test-threads=1"
           - os: windows-latest
             # env::set_var / remove_var are not thread-safe on Windows;
             # run tests single-threaded to avoid race conditions.
